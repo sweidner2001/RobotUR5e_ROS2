@@ -1,0 +1,45 @@
+# NOTE: "jazzy" (ROS 2 Rolling) is not compatible with 
+# https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation
+
+# Base ROS image
+ARG ROS_DISTRO=humble
+FROM ros:${ROS_DISTRO}
+
+# User configuration
+ARG USERNAME=admin
+ARG USER_UID=1000
+ARG USER_GID=${USER_UID}
+
+# Environment variables
+ENV DEBIAN_FRONTEND=noninteractive
+ENV SHELL=/bin/bash
+ENV ROS_DISTRO=${ROS_DISTRO}
+ENV ROS_DOMAIN_ID=0
+
+# Install system and ROS packages, create a user with sudo privileges
+RUN apt-get update && apt-get upgrade -y \
+    && apt-get install -y --no-install-recommends \
+        sudo \
+        python3-pip \
+        gazebo \
+        ros-${ROS_DISTRO}-rviz2 \
+        ros-${ROS_DISTRO}-gazebo-ros-pkgs \
+        ros-${ROS_DISTRO}-gazebo-ros2-control \
+        ros-${ROS_DISTRO}-joint-state-publisher-gui \
+    # Create group and user with sudo access
+    && groupadd --gid ${USER_GID} ${USERNAME} \  
+    && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
+    && echo "${USERNAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
+    && chmod 0440 /etc/sudoers.d/${USERNAME} \
+    # Clean up apt cache to reduce image size
+    && rm -rf /var/lib/apt/lists/*
+
+# Automatically source ROS setup in all shells
+RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /etc/bash.bashrc \
+    && echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/${USERNAME}/.bashrc
+
+# Switch to non-root user
+USER ${USERNAME}
+
+# Default shell
+CMD ["/bin/bash"]
