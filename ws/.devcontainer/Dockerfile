@@ -17,15 +17,22 @@ ENV ROS_DISTRO=${ROS_DISTRO}
 ENV ROS_DOMAIN_ID=0
 
 # Install system and ROS packages, create a user with sudo privileges
-RUN apt-get update && apt-get upgrade -y \
+RUN apt-get update \
+    && apt-get upgrade -y \ 
     && apt-get install -y --no-install-recommends \
         sudo \
         python3-pip \
+        python3-vcstool \
+        python3-rosdep \
+        python3-colcon-common-extensions \
         gazebo \
         ros-${ROS_DISTRO}-rviz2 \
         ros-${ROS_DISTRO}-gazebo-ros-pkgs \
         ros-${ROS_DISTRO}-gazebo-ros2-control \
         ros-${ROS_DISTRO}-joint-state-publisher-gui \
+        ros-${ROS_DISTRO}-ros2-control \
+        ros-${ROS_DISTRO}-ros2-controllers \
+        ros-${ROS_DISTRO}-joint-state-broadcaster \
     # Create group and user with sudo access
     && groupadd --gid ${USER_GID} ${USERNAME} \  
     && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
