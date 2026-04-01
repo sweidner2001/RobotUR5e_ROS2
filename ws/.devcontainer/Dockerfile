@@ -33,6 +33,8 @@ RUN apt-get update \
         ros-${ROS_DISTRO}-ros2-control \
         ros-${ROS_DISTRO}-ros2-controllers \
         ros-${ROS_DISTRO}-joint-state-broadcaster \
+        ros-${ROS_DISTRO}-ur \
+        ros-${ROS_DISTRO}-ur-robot-driver \
         # standard networks commands for dev-container (ping, ip, net-tools)
         iputils-ping \
         iproute2 \
