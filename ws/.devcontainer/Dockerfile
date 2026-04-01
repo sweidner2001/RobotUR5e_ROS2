@@ -33,6 +33,10 @@ RUN apt-get update \
         ros-${ROS_DISTRO}-ros2-control \
         ros-${ROS_DISTRO}-ros2-controllers \
         ros-${ROS_DISTRO}-joint-state-broadcaster \
+        # standard networks commands for dev-container (ping, ip, net-tools)
+        iputils-ping \
+        iproute2 \
+        net-tools \
     # Create group and user with sudo access
     && groupadd --gid ${USER_GID} ${USERNAME} \  
     && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
