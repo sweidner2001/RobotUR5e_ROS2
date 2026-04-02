@@ -18,9 +18,10 @@ ENV ROS_DOMAIN_ID=0
 
 # Install system and ROS packages, create a user with sudo privileges
 RUN apt-get update \
-    && apt-get upgrade -y \ 
+    && apt-get upgrade -y \
     && apt-get install -y --no-install-recommends \
         sudo \
+        git \
         python3-pip \
         python3-vcstool \
         python3-rosdep \
@@ -40,7 +41,7 @@ RUN apt-get update \
         iproute2 \
         net-tools \
     # Create group and user with sudo access
-    && groupadd --gid ${USER_GID} ${USERNAME} \  
+    && groupadd --gid ${USER_GID} ${USERNAME} \
     && useradd --uid ${USER_UID} --gid ${USER_GID} -m ${USERNAME} \
     && echo "${USERNAME} ALL=(root) NOPASSWD:ALL" > /etc/sudoers.d/${USERNAME} \
     && chmod 0440 /etc/sudoers.d/${USERNAME} \
