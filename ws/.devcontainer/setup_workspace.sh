@@ -4,9 +4,7 @@ mkdir -p $COLCON_WS/src
 cd $COLCON_WS
 
 # 2. ROS-Umgebung laden
-if [ -z "$ROS_DISTRO" ]; then
-    source /opt/ros/humble/setup.bash
-fi
+source /opt/ros/humble/setup.bash
 
 # 3. Paketindex aktualisieren fuer rosdep/apt
 sudo apt update
