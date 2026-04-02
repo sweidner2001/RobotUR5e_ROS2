@@ -52,32 +52,21 @@ RUN apt-get update \
 RUN echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /etc/bash.bashrc \
     && echo "source /opt/ros/${ROS_DISTRO}/setup.bash" >> /home/${USERNAME}/.bashrc
 
+
+
+
+# Copy workspace setup script
+ARG SETUP_SCRIPT=setup_workspace_called_in_dockerfile_old.sh
+COPY ${SETUP_SCRIPT} /tmp/${SETUP_SCRIPT}
+RUN chmod +x /tmp/${SETUP_SCRIPT}
+
 # Switch to non-root user
 USER ${USERNAME}
 
+# Build UR workspace with non-root user (maybe it is better) (cached by Docker)
+RUN /bin/bash /tmp/${SETUP_SCRIPT}
 
 
-
-# 1. Create workspace and clone repositories
-RUN mkdir -p ~/workspaces/ur_gazebo/src \
-    && cd ~/workspaces/ur_gazebo/src \
-    && git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
-
-# 2. Install system dependencies via rosdep
-RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash \
-    && cd ~/workspaces/ur_gazebo \
-    && sudo apt-get update \
-    && rosdep update \
-    && rosdep install --from-paths src --ignore-src -r -y \
-    && sudo rm -rf /var/lib/apt/lists/*"
-
-# 3. Build the workspace
-RUN /bin/bash -c "source /opt/ros/${ROS_DISTRO}/setup.bash \
-    && cd ~/workspaces/ur_gazebo \
-    && colcon build --symlink-install"
-
-# 4. Source workspace in .bashrc
-RUN echo "source ~/workspaces/ur_gazebo/install/setup.bash" >> ~/.bashrc
 
 # Default shell
 CMD ["/bin/bash"]
