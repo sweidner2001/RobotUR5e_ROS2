@@ -15,4 +15,4 @@ else
 fi
 
 # 3. Simulation starten (Gazebo + MoveIt + RViz in einem Befehl)
-ros2 launch ur_simulation_gazebo ur_sim_control.launch.py
+ros2 launch ur_simulation_gazebo ur_sim_moveit.launch.py
