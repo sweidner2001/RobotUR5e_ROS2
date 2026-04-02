@@ -1,3 +1,6 @@
+#!/bin/bash
+set -e
+
 # 1. Variablen definieren und Verzeichnisse sicherstellen
 COLCON_WS=~/workspaces/ur_gazebo
 mkdir -p $COLCON_WS/src
