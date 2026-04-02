@@ -4,16 +4,18 @@ mkdir -p $COLCON_WS/src
 cd $COLCON_WS
 
 # 2. ROS-Umgebung laden
-#source /opt/ros/humble/setup.bash
+if [ -z "$ROS_DISTRO" ]; then
+    source /opt/ros/humble/setup.bash
+fi
 
 # 3. Paketindex aktualisieren fuer rosdep/apt
 sudo apt update
 
 # 4. Repositories klonen (falls nicht vorhanden)
 cd $COLCON_WS/src
-if [ ! -d "Universal_Robots_ROS2_Driver" ]; then
-    git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
-fi
+# if [ ! -d "Universal_Robots_ROS2_Driver" ]; then
+#     git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Driver.git
+# fi
 
 if [ ! -d "Universal_Robots_ROS2_Gazebo_Simulation" ]; then
     git clone -b humble https://github.com/UniversalRobots/Universal_Robots_ROS2_Gazebo_Simulation.git
@@ -21,7 +23,7 @@ fi
 
 # 5. VCS Import: Holt die exakt passenden Abhängigkeiten (ur_msgs, ur_client_library etc.)
 cd $COLCON_WS
-vcs import src < src/Universal_Robots_ROS2_Driver/Universal_Robots_ROS2_Driver.humble.repos
+# vcs import src < src/Universal_Robots_ROS2_Driver/Universal_Robots_ROS2_Driver.humble.repos
 
 # 6. System-Abhängigkeiten installieren
 rosdep update
