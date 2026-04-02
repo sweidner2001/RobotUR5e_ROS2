@@ -5,9 +5,6 @@
 ROOT_DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" && cd .. && pwd )"
 echo "Root-Verzeichnis: $ROOT_DIR"
 
-
-
-# ROS laden + Gazebo-Workspace sourcen
 source /opt/ros/humble/setup.bash
 
 # Startet das Launch-File (achte darauf, dass es im Paket-Pfad ist)
