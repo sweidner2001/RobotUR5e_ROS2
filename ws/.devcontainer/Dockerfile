@@ -36,6 +36,7 @@ RUN apt-get update \
         ros-${ROS_DISTRO}-joint-state-broadcaster \
         ros-${ROS_DISTRO}-ur \
         ros-${ROS_DISTRO}-ur-robot-driver \
+        ros-${ROS_DISTRO}-ur-description \
         # standard networks commands for dev-container (ping, ip, net-tools)
         iputils-ping \
         iproute2 \
