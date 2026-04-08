@@ -9,7 +9,7 @@ from ament_index_python.packages import get_package_share_directory
 def generate_launch_description():
     # 1. Config finden (liegt eine Ebene höher als dieses Script)
     script_dir = os.path.dirname(os.path.realpath(__file__))
-    config_path = os.path.join(script_dir, '..', 'robot_config.yaml')
+    config_path = os.path.join(script_dir, '..', '..', 'robot_config.yaml')
     
     with open(config_path, 'r') as f:
         config = yaml.safe_load(f)['robot_params']['ros__parameters']
