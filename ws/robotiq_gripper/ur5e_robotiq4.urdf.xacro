@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://wiki.ros.org/xacro" name="ur5e_with_robotiq_140">
+
+  <link name="world"/>
+
+  <xacro:include filename="$(find ur_description)/urdf/ur_macro.xacro"/>
+  
+  <xacro:arg name="name" default="ur"/>
+  <xacro:arg name="ur_type" default="ur5e"/>
+  <xacro:arg name="tf_prefix" default=""/>
+  <!-- <xacro:arg name="joint_limit_params" default="$(find ur_description)/config/ur5e/joint_limits.yaml"/> -->
+  <!-- <xacro:arg name="kinematics_params" default="$(find ur_description)/config/ur5e/default_kinematics.yaml"/> -->
+  <!-- <xacro:arg name="kinematics_params" default="/opt/ros/humble/share/ur_description/config/ur5e/default_kinematics.yaml"/>
+  <xacro:arg name="physical_params" default="$(find ur_description)/config/ur5e/physical_parameters.yaml"/>
+  <xacro:arg name="visual_params" default="$(find ur_description)/config/ur5e/visual_parameters.yaml"/> -->
+
+
+  <xacro:arg name="joint_limit_params" default="/opt/ros/humble/share/ur_description/config/ur5e/joint_limits.yaml"/>
+
+  <xacro:arg name="kinematics_params" default="/opt/ros/humble/share/ur_description/config/ur5e/default_kinematics.yaml"/>
+
+  <xacro:arg name="physical_params" default="/opt/ros/humble/share/ur_description/config/ur5e/physical_parameters.yaml"/>
+
+  <xacro:arg name="visual_params" default="/opt/ros/humble/share/ur_description/config/ur5e/visual_parameters.yaml"/>
+
+
+<xacro:ur_robot
+    name="$(arg name)"
+    tf_prefix="$(arg tf_prefix)"
+    parent="world"
+    joint_limits_parameters_file="/opt/ros/humble/share/ur_description/config/ur5e/joint_limits.yaml"
+    kinematics_parameters_file="/opt/ros/humble/share/ur_description/config/ur5e/default_kinematics.yaml"
+    physical_parameters_file="/opt/ros/humble/share/ur_description/config/ur5e/physical_parameters.yaml"
+    visual_parameters_file="/opt/ros/humble/share/ur_description/config/ur5e/visual_parameters.yaml"
+    safety_limits="false">
+    <origin xyz="0 0 0" rpy="0 0 0" />
+  </xacro:ur_robot>
+
+<!-- <ros2_control name="RobotiqGripperHardware" type="system">
+    <hardware>
+      <plugin>robotiq_driver/RobotiqGripperHardwareInterface</plugin>
+      <param name="com_port">/tmp/ttyUR</param>
+      <param name="gripper_speed_multiplier">1.0</param>
+      <param name="gripper_force_multiplier">1.0</param>
+    </hardware>
+    <joint name="finger_joint">
+      <command_interface name="position" />
+      <state_interface name="position" />
+      <state_interface name="velocity" />
+    </joint>
+  </ros2_control> -->
+
+  <link name="robotiq_140_base_link">
+    <visual>
+      <origin xyz="0 0 0.08" rpy="0 0 0"/>
+      <geometry><cylinder length="0.16" radius="0.04"/></geometry>
+      <material name="black"><color rgba="0.1 0.1 0.1 1"/></material>
+    </visual>
+  </link>
+
+  <joint name="ur_to_gripper" type="fixed">
+    <parent link="tool0"/>
+    <child link="robotiq_140_base_link"/>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+  </joint>
+
+  <link name="left_finger_link"/>
+  <joint name="finger_joint" type="prismatic">
+    <parent link="robotiq_140_base_link"/>
+    <child link="left_finger_link"/>
+    <axis xyz="0 0 1"/>
+    <limit lower="0.0" upper="0.14" effort="100" velocity="0.5"/>
+  </joint>
+
+</robot>
